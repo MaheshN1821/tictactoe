@@ -9,6 +9,7 @@ function GameLogic() {
 
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
+  const [count, setCount] = useState(0);
 
   const calculateWinner = (squares) => {
     const lines = [
@@ -36,10 +37,12 @@ function GameLogic() {
   };
 
   const winner = calculateWinner(board);
+  const isDraw = !winner && count === 9;
 
   const handleClick = (index) => {
     if (winner || board[index]) return;
 
+    setCount(count + 1);
     const newBoard = board.slice();
     newBoard[index] = isXNext ? "X" : "O";
     setBoard(newBoard);
@@ -63,9 +66,12 @@ function GameLogic() {
 
   const status = winner
     ? `Winner: ${winner}`
+    : isDraw
+    ? `Its a Draw!`
     : `Player: ${isXNext ? "X" : "O"}`;
 
   function handleClear() {
+    setCount(0);
     setBoard(Array(9).fill(null));
     setIsXNext(true);
   }
